@@ -1,0 +1,171 @@
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import csv
+
+with open('airfields.txt', mode='r') as csv_file:
+	fields = ['ident', 'afname', 'latit', 'longit']
+	csv_reader = csv.DictReader(csv_file, fieldnames= fields)
+	airfield_list = []
+	for row in csv_reader:
+
+		airfield_list.append(row)
+print(airfield_list[1]['ident'])
+
+
+
+		
+
+ax = plt.axes(projection=ccrs.PlateCarree())
+ax.coastlines()
+# set plot to display full world
+ax.set_global()
+
+class Airport:
+	def __init__(self, name, lat, long):
+		self.name = name
+		self.lat = lat
+		self.long = long
+
+class Route:
+	def __init__(self, origin, destn):
+		self.origin = origin
+		self.destn = destn
+		"""self.long1 = long1
+		self.name2 = name2
+		self.lat2 = lat2
+		self.long2 = long2"""
+
+	"""def plotroute(self):
+		plt.plot([self.long1, self.long2], [self.lat1, self.lat2],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )"""
+"""find airfield pair in airfield list, pass info from row to route,plot route
+"""
+
+	def plotroute2(self):
+		plt.plot([self.origin["longitude"], self.destn["longitude"]], [self.origin["latitude"], self.destn["latitude"]],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+
+jfk = {
+	"airport":'JFK', 
+	"latitude": 40.38, 
+	"longitude": -73.46
+}
+sfo = {
+	"airport": 'SFO',
+	"latitude": 37.37,
+	"longitude": -122.22
+}
+delh = {
+	"airport":'DEL', 
+	"latitude": 28.34, 
+	"longitude": 77.06
+}
+lhr = {
+	"airport":'LHR', 
+	"latitude": 51.29, 
+	"longitude": 00.27
+}
+bos = {
+	"airport":'BOS', 
+	"latitude": 42.21, 
+	"longitude": -71.00
+}
+sea = {
+	"airport":'SEA', 
+	"latitude": 47.27, 
+	"longitude": -122.19
+}
+lax = {
+	"airport":'LAX', 
+	"latitude": 33.56, 
+	"longitude": -118.24
+}
+jnb = {
+	"airport":'JNB', 
+	"latitude": -26.08, 
+	"longitude": 28.14
+}
+pvg = {
+	"airport":'PVG', 
+	"latitude": 31.08, 
+	"longitude": 121.47
+}
+hkg = {
+	"airport":'HKG', 
+	"latitude": 22.18, 
+	"longitude": 113.54
+}
+
+
+lhrsfo = Route(lhr,sfo)
+lhrsfo.plotroute2()
+lhrjfk = Route(lhr,jfk)
+lhrjfk.plotroute2()
+lhrbos = Route(lhr,bos)
+lhrbos.plotroute2()
+lhrhkg = Route(lhr,hkg)
+lhrhkg.plotroute2()
+lhrpvg = Route(lhr,pvg)
+lhrpvg.plotroute2()
+lhrjnb = Route(lhr,jnb)
+lhrjnb.plotroute2()
+lhrlax = Route(lhr,lax)
+lhrlax.plotroute2()
+lhrdelh = Route(lhr,delh)
+lhrdelh.plotroute2()
+lhrsea = Route(lhr,sea)
+lhrsea.plotroute2()
+
+
+
+"""lhrbos = Route('LHR',51.29, 00.27, 'BOS', 42.21, -71.00)
+lhrbos.plotroute()"""
+"""
+plt.plot([lhr.long, delh.long], [lhr.lat, delh.lat],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )"""
+"""plt.plot([lhr.long, jfk.long], [lhr.lat, jfk.lat],
+         color='red', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, bos.long], [lhr.lat, bos.lat],
+         color='purple', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+         
+plt.plot([lhr.long, lax.long], [lhr.lat, lax.lat],
+         color='black', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, sea.long], [lhr.lat, sea.lat],
+         color='pink', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, hkg.long], [lhr.lat, hkg.lat],
+         color='black', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, jnb.long], [lhr.lat, jnb.lat],
+         color='black', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, pvg.long], [lhr.lat, pvg.lat],
+         color='black', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+plt.plot([lhr.long, sfo.long], [lhr.lat, sfo.lat],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+
+"""
+# Save the plot by calling plt.savefig() BEFORE plt.show()
+plt.savefig('coastlines.pdf')
+plt.savefig('coastlines.png')
+
+plt.show()
