@@ -1,0 +1,68 @@
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import csv
+
+with open('airfields.txt', mode='r') as csv_file:
+	fields = ['ident', 'afname', 'latit', 'longit']
+	csv_reader = csv.DictReader(csv_file, fieldnames= fields)
+	airfield_list = []
+	for row in csv_reader:
+
+		airfield_list.append(row)
+#for af in airfield_list:
+#	print(af['ident'])
+		
+
+ax = plt.axes(projection=ccrs.PlateCarree())
+ax.coastlines()
+# set plot to display full world
+ax.set_global()
+
+class Airport:
+	def __init__(self, name, lat, long):
+		self.name = name
+		self.lat = lat
+		self.long = long
+
+class Route:
+	def __init__(self, origin, destn):
+		self.origin = origin
+		self.destn = destn
+		for af in airfield_list:
+			if origin == af['ident']:
+				startpt = af
+			if destn == af['ident']:
+				endpt = af
+		print(startpt, endpt)
+		
+		plt.plot([float(startpt['longit']), float(endpt['longit'])], [float(startpt['latit']), float(endpt['latit'])],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+
+		
+         
+	"""find airfield pair in airfield list, pass info from row to route,plot route"""
+	def findroute(self):
+		for field in airfield_list:
+			 print(['ident'])
+
+
+	def plotroute2(self):
+		plt.plot([self.origin["longitude"], self.destn["longitude"]], [self.origin["latitude"], self.destn["latitude"]],
+         color='blue', linewidth=1, marker='o',
+         transform=ccrs.Geodetic(),
+         )
+
+lhrroutes = ["JFK", "PVG", "JNB", "LAX", "DEL", "BOS", "MBJ", "SJU", "HKG", "ORD", "BRU", "MIA", "PLS", "TLV", "LHE"]
+for routes in lhrroutes:
+	Route("LHR", routes)
+Route("PLS","MIA")
+
+
+
+# Save the plot by calling plt.savefig() BEFORE plt.show()
+plt.savefig('coastlines.pdf')
+plt.savefig('coastlines.png')
+
+plt.show()
