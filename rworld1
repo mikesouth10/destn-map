@@ -1,13 +1,16 @@
-# Create dataset long, lat
+# Create dataset long, lat, unsure if decimal or mins
 data <- rbind(
     LHR=c(0.27, 51.28),
     SFO=c(-122.22, 37.37),
     SEA=c(-122.18, 47.27),
     BLR=c(77.42, 13.11),
     BOM=c(72.52, 19.05),
+    BOS=c(-71.00, 42.21),
     MIA=c(-80.17, 25.47),
     IAD=c(-77.27, 38.56),
-    JFK=c(-73.46, 40.38)
+    JFK=c(-73.46, 40.38),
+    MAN=c(-2.16, 53.21),
+    TER=c(-27.05, 38.45)
     )  %>% as.data.frame()
 colnames(data)=c("long","lat")
 
