@@ -6,13 +6,49 @@ data <- rbind(
     BLR=c(77.42, 13.11),
     BOM=c(72.52, 19.05),
     BOS=c(-71.00, 42.21),
+    MBJ=c(-77.54, 18.3),
     MIA=c(-80.17, 25.47),
     IAD=c(-77.27, 38.56),
     JFK=c(-73.46, 40.38),
+    LAX=c(-118.24, 33.56),
     MAN=c(-2.16, 53.21),
-    TER=c(-27.05, 38.45)
+    TER=c(-27.05, 38.45),
+    YYZ=c(-79.37, 43.40)
     )  %>% as.data.frame()
 colnames(data)=c("long","lat")
+
+# Create dataset long, lat, for LHR deps
+lhrdepdata <- rbind(
+    SFO=c(-122.22, 37.37),
+    SEA=c(-122.18, 47.27),
+    BLR=c(77.42, 13.11),
+    BOM=c(72.52, 19.05),
+    BOS=c(-71.00, 42.21),
+    MIA=c(-80.17, 25.47),
+    IAD=c(-77.27, 38.56),
+    JFK=c(-73.46, 40.38),
+    LAX=c(-118.24, 33.56),
+    YYZ=c(-79.37, 43.40)
+    )  %>% as.data.frame()
+colnames(lhrdepdata)=c("long","lat")
+
+# A function to plot connections
+plot_my_connection=function( dep_lon, dep_lat, arr_lon, arr_lat, ...){
+    inter <- gcIntermediate(c(dep_lon, dep_lat), c(arr_lon, arr_lat), n=50, addStartEnd=TRUE, breakAtDateLine=F)             
+    inter=data.frame(inter)
+    diff_of_lon=abs(dep_lon) + abs(arr_lon)
+    if(diff_of_lon > 180){
+        lines(subset(inter, lon>=0), ...)
+        lines(subset(inter, lon<0), ...)
+    }else{
+        lines(inter, ...)
+        }
+    }
+
+
+#  for(i in 1:nrow(lhrdepdata)){
+#    plot_my_connection(all_pairs$long1[1], all_pairs$lat1[1], lhrdepdata$long[i], lhrdepdata$lat[i], col="skyblue", lwd=1)
+#   }
 
 # Generate all pairs of coordinates
 all_pairs <- cbind(t(combn(data$long, 2)), t(combn(data$lat, 2))) %>% as.data.frame()
@@ -20,13 +56,13 @@ colnames(all_pairs) <- c("long1","long2","lat1","lat2")
 
 # background map
 par(mar=c(0,0,0,0))
-map('world',col="#f2f2f2", fill=TRUE, bg="white", lwd=0.05,mar=rep(0,4),border=0, ylim=c(-80,80) )
+map('world',col="#f2f2f2", fill=TRUE, interior=TRUE, bg="white", lwd=0.05,mar=rep(0,4),border=0, ylim=c(-80,80) )
  
 # add every connections:
-for(i in 1:nrow(all_pairs)){
-    plot_my_connection(all_pairs$long1[i], all_pairs$lat1[i], all_pairs$long2[i], all_pairs$lat2[i], col="skyblue", lwd=1)
-    }
+ for(i in 1:nrow(all_pairs)){
+  plot_my_connection(all_pairs$long1[i], all_pairs$lat1[i], all_pairs$long2[i], all_pairs$lat2[i], col="skyblue", lwd=1)
+  }
  
 # add points and names of cities
-points(x=data$long, y=data$lat, col="slateblue", cex=1, pch=20)
-text(rownames(data), x=data$long, y=data$lat,  col="slateblue", cex=0.5, pos=4)
+points(x=data$long, y=data$lat, col="slateblue", cex=0.8, pch=20)
+text(rownames(data), x=data$long, y=data$lat,  col="slateblue", cex=0.3, pos=4)
